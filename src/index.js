@@ -12,9 +12,8 @@ const uli1 = createElement("ul", { class: "list-group", id: "list-group" }, [
   createElement("li", { class: "item", id: "item" }, ["3"])
 ])
 
-const patches = diff(uli, uli1);
-console.log(patches);
-
 let ul = uli.render();
 
 document.body.appendChild(ul)
+
+const patches = diff(uli, uli1);
