@@ -1,5 +1,6 @@
 const { createElement } = require("./element");
 const diff = require("./diff");
+const patch = require("./patch");
 
 const uli = createElement("ul", { class: "list", id: "list" }, [
   createElement("li", { class: "item", id: "item" }, ["1"]),
@@ -7,9 +8,8 @@ const uli = createElement("ul", { class: "list", id: "list" }, [
   createElement("li", { class: "item", id: "item" }, ["3"])
 ])
 const uli1 = createElement("ul", { class: "list-group", id: "list-group" }, [
-  createElement("li", { class: "item", id: "item" }, ["2"]),
+  createElement("li", { class: "item" }, ["2"]),
   createElement("li", { class: "item", id: "item" }, ["3"]),
-  createElement("li", { class: "item", id: "item" }, ["3"])
 ])
 
 let ul = uli.render();
@@ -17,3 +17,5 @@ let ul = uli.render();
 document.body.appendChild(ul)
 
 const patches = diff(uli, uli1);
+
+patch(ul, patches)

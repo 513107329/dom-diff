@@ -86,14 +86,25 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/action.js":
+/*!***********************!*\
+  !*** ./src/action.js ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const ATTRS = \"ATTRS\";\r\nconst REPLACE = \"REPLACE\";\r\nconst TEXT = \"TEXT\";\r\nconst REMOVE = \"REMOVE\";\r\n\r\nmodule.exports = { ATTRS, REPLACE, TEXT, REMOVE }\n\n//# sourceURL=webpack:///./src/action.js?");
+
+/***/ }),
+
 /***/ "./src/diff.js":
 /*!*********************!*\
   !*** ./src/diff.js ***!
   \*********************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("const ATTRS = \"ATTRS\";\r\nconst REPLACE = \"REPLACE\";\r\nconst TEXT = \"TEXT\";\r\nconst REMOVE = \"REMOVE\";\r\nlet Index = 0;\r\n\r\nfunction diff(oldNode, newNode) {\r\n  let patches = {};\r\n  let index = 0;\r\n  walk(oldNode, newNode, index, patches);\r\n  return patches\r\n}\r\n\r\nfunction isString(node) {\r\n  return Object.prototype.toString.call(node) === \"[object String]\"\r\n}\r\n\r\nfunction walk(oldNode, newNode, index, patches) {\r\n  let currentPatch = [];\r\n  if (!newNode) {\r\n    currentPatch.push({ type: REMOVE, index })\r\n  } else if (isString(oldNode) && isString(newNode)) {\r\n    if (oldNode !== newNode) {\r\n      currentPatch.push({ type: TEXT, text: newNode })\r\n    }\r\n  } else if (oldNode.tagName === newNode.tagName) {\r\n    let attrs = diffAttr(oldNode.attrs, newNode.attrs);\r\n    if (Object.keys(attrs).length > 0) {\r\n      currentPatch.push({ type: ATTRS, attrs })\r\n    }\r\n    diffChildren(oldNode.children, newNode.children, patches)\r\n  } else {\r\n    currentPatch.push({ type: REPLACE, newNode })\r\n  }\r\n\r\n  if (currentPatch.length > 0) {\r\n    patches[index] = currentPatch;\r\n    console.log(patches)\r\n  }\r\n}\r\n\r\nfunction diffAttr(oldAttrs, newAttrs) {\r\n  let patch = {};\r\n  for (let key in oldAttrs) {\r\n    if (oldAttrs[key] !== newAttrs[key]) {\r\n      patch[key] = newAttrs[key]\r\n    }\r\n  }\r\n\r\n  for (let key in newAttrs) {\r\n    if (!oldAttrs.hasOwnProperty(key)) {\r\n      patch[key] = newAttrs[key]\r\n    }\r\n  }\r\n\r\n  return patch\r\n}\r\n\r\nfunction diffChildren(oldChildren, newChildren, patches) {\r\n  oldChildren.forEach((child, idx) => {\r\n    walk(child, newChildren[idx], ++Index, patches)\r\n  })\r\n}\r\n\r\nmodule.exports = diff\n\n//# sourceURL=webpack:///./src/diff.js?");
+eval("const { ATTRS, REPLACE, TEXT, REMOVE } = __webpack_require__(/*! ./action */ \"./src/action.js\");\r\n\r\nlet Index = 0;\r\n\r\nfunction diff(oldNode, newNode) {\r\n  let patches = {};\r\n  let index = 0;\r\n  walk(oldNode, newNode, index, patches);\r\n  return patches\r\n}\r\n\r\nfunction isString(node) {\r\n  return Object.prototype.toString.call(node) === \"[object String]\"\r\n}\r\n\r\nfunction walk(oldNode, newNode, index, patches) {\r\n  let currentPatch = [];\r\n  if (!newNode) {\r\n    currentPatch.push({ type: REMOVE, index })\r\n  } else if (isString(oldNode) && isString(newNode)) {\r\n    if (oldNode !== newNode) {\r\n      currentPatch.push({ type: TEXT, text: newNode })\r\n    }\r\n  } else if (oldNode.tagName === newNode.tagName) {\r\n    let attrs = diffAttr(oldNode.attrs, newNode.attrs);\r\n    if (Object.keys(attrs).length > 0) {\r\n      currentPatch.push({ type: ATTRS, attrs })\r\n    }\r\n    diffChildren(oldNode.children, newNode.children, patches)\r\n  } else {\r\n    currentPatch.push({ type: REPLACE, newNode })\r\n  }\r\n\r\n  if (currentPatch.length > 0) {\r\n    patches[index] = currentPatch;\r\n    console.log(patches)\r\n  }\r\n}\r\n\r\nfunction diffAttr(oldAttrs, newAttrs) {\r\n  let patch = {};\r\n  for (let key in oldAttrs) {\r\n    if (oldAttrs[key] !== newAttrs[key]) {\r\n      patch[key] = newAttrs[key]\r\n    }\r\n  }\r\n\r\n  for (let key in newAttrs) {\r\n    if (!oldAttrs.hasOwnProperty(key)) {\r\n      patch[key] = newAttrs[key]\r\n    }\r\n  }\r\n\r\n  return patch\r\n}\r\n\r\nfunction diffChildren(oldChildren, newChildren, patches) {\r\n  oldChildren.forEach((child, idx) => {\r\n    walk(child, newChildren[idx], ++Index, patches)\r\n  })\r\n}\r\n\r\nmodule.exports = diff\n\n//# sourceURL=webpack:///./src/diff.js?");
 
 /***/ }),
 
@@ -115,7 +126,18 @@ eval("const utils = __webpack_require__(/*! ./utils */ \"./src/utils.js\");\r\n\
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const { createElement } = __webpack_require__(/*! ./element */ \"./src/element.js\");\r\nconst diff = __webpack_require__(/*! ./diff */ \"./src/diff.js\");\r\n\r\nconst uli = createElement(\"ul\", { class: \"list\", id: \"list\" }, [\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"1\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"2\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"3\"])\r\n])\r\nconst uli1 = createElement(\"ul\", { class: \"list-group\", id: \"list-group\" }, [\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"2\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"3\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"3\"])\r\n])\r\n\r\nlet ul = uli.render();\r\n\r\ndocument.body.appendChild(ul)\r\n\r\nconst patches = diff(uli, uli1);\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const { createElement } = __webpack_require__(/*! ./element */ \"./src/element.js\");\r\nconst diff = __webpack_require__(/*! ./diff */ \"./src/diff.js\");\r\nconst patch = __webpack_require__(/*! ./patch */ \"./src/patch.js\");\r\n\r\nconst uli = createElement(\"ul\", { class: \"list\", id: \"list\" }, [\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"1\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"2\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"3\"])\r\n])\r\nconst uli1 = createElement(\"ul\", { class: \"list-group\", id: \"list-group\" }, [\r\n  createElement(\"li\", { class: \"item\" }, [\"2\"]),\r\n  createElement(\"li\", { class: \"item\", id: \"item\" }, [\"3\"]),\r\n])\r\n\r\nlet ul = uli.render();\r\n\r\ndocument.body.appendChild(ul)\r\n\r\nconst patches = diff(uli, uli1);\r\n\r\npatch(ul, patches)\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/patch.js":
+/*!**********************!*\
+  !*** ./src/patch.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const { ATTRS, REPLACE, TEXT, REMOVE } = __webpack_require__(/*! ./action */ \"./src/action.js\");\r\nconst util = __webpack_require__(/*! ./utils */ \"./src/utils.js\");\r\nlet Index = 0;\r\nlet allPatches;\r\n\r\nfunction patch(node, patches) {\r\n  allPatches = patches;\r\n  walk(node);\r\n}\r\n\r\nfunction walk(node) {\r\n  let currentPatch = allPatches[Index++];\r\n\r\n  (node.childNodes || []).forEach(child => {\r\n    walk(child)\r\n  })\r\n\r\n  if (currentPatch) {\r\n    doPatch(node, currentPatch)\r\n  }\r\n}\r\n\r\nfunction doPatch(node, currentPatches) {\r\n  currentPatches.forEach(patch => {\r\n    switch (patch.type) {\r\n      case ATTRS:\r\n        for (let key in patch.attrs) {\r\n          if (patch.attrs[key]) {\r\n            util.setAttr(node, key, patch.attrs[key])\r\n          } else {\r\n            node.removeAttribute(key)\r\n          }\r\n        }\r\n        break;\r\n      case REPLACE:\r\n        let newNode = (typeof patch.newNode === 'string') ? document.createTextNode(patch.newNode) : patch.newNode.render();\r\n        node.parentNode.replaceChild(node, newNode);\r\n        break;\r\n      case TEXT:\r\n        node.textContent = patch.text\r\n        break;\r\n      case REMOVE:\r\n        node.parentNode.removeChild(node)\r\n        break;\r\n      default:\r\n        break;\r\n    }\r\n  })\r\n}\r\n\r\nmodule.exports = patch\n\n//# sourceURL=webpack:///./src/patch.js?");
 
 /***/ }),
 

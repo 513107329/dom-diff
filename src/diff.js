@@ -1,7 +1,5 @@
-const ATTRS = "ATTRS";
-const REPLACE = "REPLACE";
-const TEXT = "TEXT";
-const REMOVE = "REMOVE";
+const { ATTRS, REPLACE, TEXT, REMOVE } = require('./action');
+
 let Index = 0;
 
 function diff(oldNode, newNode) {
